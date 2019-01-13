@@ -1,0 +1,48 @@
+{
+  "name": "mern-auth-boilerplate",
+  "description": "Full stack authentication app boilerplate, build with node, express, mongo, react",
+  "author": "Lang Guillaume <lang.guillaume@gmail.com>",
+  "version": "0.0.1",
+  "main": "./src/app.js",
+  "repository": "git@github.com:TituxMetal/mernstack-auth-boilerplate.git",
+  "license": "MIT",
+  "scripts": {
+    "start": "export NODE_ENV=production && node ./src/app.js",
+    "start-dev": "export NODE_ENV=development && nodemon",
+    "docker:mongo": "docker run -d --rm --name mongoDev -v /etc/localtime:/etc/localtime:ro -v /etc/timezone:/etc/timezone:ro -v ~/mongoData/data:/data/db mongo:4.0.5",
+    "test": "export NODE_ENV=test && jest --watch tests/**/*.test.js",
+    "test-coverage": "export NODE_ENV=test && jest --coverage tests/**/*.test.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-promise-router": "^3.0.3",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.4.2",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "faker": "^4.1.0",
+    "jest": "^23.6.0",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.9",
+    "supertest": "^3.3.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/tests/report/**",
+      "!**/src/app.js"
+    ],
+    "coverageDirectory": "./tests/report",
+    "coverageReporters": [
+      "html"
+    ]
+  }
+}
