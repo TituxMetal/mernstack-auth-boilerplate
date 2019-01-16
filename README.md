@@ -6,6 +6,9 @@
 
 - POST /api/users/register (payload: email, name, password) (res: { errors } || { user })
 - POST /api/users/login (payload: email, password) (res: { errors } || { token })
+- POST /api/users/auth/google (payload: access_token) (res: { errors } || { token })
+- POST /api/users/auth/github (payload: access_token) (res: { errors } || { token })
+- POST /api/users/auth/facebook (payload: access_token) (res: { errors } || { token })
 - GET /api/users/secret (res: { secret })
 
 ## Run the project
@@ -29,6 +32,21 @@ curl -d '{"name": "your name", "email": "your@email.com", "password": "yoursuper
 For login a user, a token will be returned
 ```
 curl -d '{"email": "your@email.com", "password": "yoursupersecretpassword"}' -H "Content-Type: application/json" -X POST http://localhost:5000/api/users/login
+```
+
+For Google OAuth, a token will be returned
+```
+curl -d '{"access_token": "YourGoogleAccessToken"}' -H "Content-Type: application/json" -X POST http://localhost:5000/api/users/auth/google
+```
+
+For Github OAuth, a token will be returned
+```
+curl -d '{"access_token": "YourGithubAccessToken"}' -H "Content-Type: application/json" -X POST http://localhost:5000/api/users/auth/github
+```
+
+For Facebook OAuth, a token will be returned
+```
+curl -d '{"access_token": "YourFacebookAccessToken"}' -H "Content-Type: application/json" -X POST http://localhost:5000/api/users/auth/facebook
 ```
 
 For accessing the secret resource, secret resource will be returned
