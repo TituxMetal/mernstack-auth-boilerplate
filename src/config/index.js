@@ -5,5 +5,7 @@ module.exports = {
   passportGoogleClientId: process.env.passportGoogleClientId,
   passportGoogleClientSecret: process.env.passportGoogleClientSecret,
   passportGithubClientId: process.env.passportGithubClientId,
-  passportGithubClientSecret: process.env.passportGithubClientSecret
+  passportGithubClientSecret: process.env.passportGithubClientSecret,
+  passportFacebookClientId: process.env.passportFacebookClientId,
+  passportFacebookClientSecret: process.env.passportFacebookClientSecret
 }
