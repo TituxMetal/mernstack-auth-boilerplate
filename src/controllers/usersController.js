@@ -16,13 +16,16 @@ module.exports = {
   register: async (req, res, next) => {
     const { name, email, password } = req.value.body
 
-    const foundUser = await User.findOne({ email })
+    const foundUser = await User.findOne({ 'local.email': email })
 
     if (foundUser) {
       return res.status(403).json({ errors: { email: 'Email already exists' } })
     }
 
-    const newUser = new User({ name, email, password })
+    const newUser = new User({
+      method: 'local',
+      local: { name, email, password }
+    })
 
     await newUser.save()
 
