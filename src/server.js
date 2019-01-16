@@ -3,6 +3,10 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const passport = require('passport')
 
+const isProd = process.env.NODE_ENV === 'production'
+
+!isProd && require('dotenv').config()
+
 // Start express
 const app = express()
 
