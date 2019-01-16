@@ -3,5 +3,7 @@ module.exports = {
   mongoUri: process.env.mongoUri || 'mongodb://mongo:27017/authApi',
   jwtSecret: process.env.jwtSecret || 'jsonwebtokensecret',
   passportGoogleClientId: process.env.passportGoogleClientId,
-  passportGoogleClientSecret: process.env.passportGoogleClientSecret
+  passportGoogleClientSecret: process.env.passportGoogleClientSecret,
+  passportGithubClientId: process.env.passportGithubClientId,
+  passportGithubClientSecret: process.env.passportGithubClientSecret
 }
