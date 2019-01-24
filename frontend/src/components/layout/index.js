@@ -1,3 +1,3 @@
-export { default as Navbar } from './Navbar'
-
-export { default as Navlinks } from './Navlinks'
+export { default as Navmenu } from './NavMenu/Navbar'
+export { default as InputField } from './forms/InputField'
+export { default as AuthButton } from './buttons/AuthButton'
