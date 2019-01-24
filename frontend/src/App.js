@@ -1,28 +1,52 @@
 import React, { Component } from 'react'
+import { ThemeProvider } from 'styled-components'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Materialize from 'materialize-css/dist/js/materialize'
 
 import { Home, Login, Register, Dashboard } from './pages/'
-import { Navbar } from './components/layout/'
+import { Navmenu } from './components/layout/'
+import { GlobalStyle, theme } from './components/styled'
+import { Provider } from './context'
 
 class App extends Component {
+  state = {
+    name: '',
+    email: '',
+    password: '',
+    passwordRepeat: ''
+  }
+
   componentDidMount() {
     const sidenavEl = document.querySelectorAll('.sidenav')
     Materialize.Sidenav.init(sidenavEl)
   }
 
+  handleChange = event => {
+    this.setState({
+      [event.target.id]: event.target.value
+    })
+  }
+
+  getContext = () => ({
+    ...this.state,
+    handleChange: this.handleChange
+  })
+
   render() {
     return (
       <BrowserRouter>
-        <>
-          <Navbar />
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
-            <Route path="/dashboard" component={Dashboard} />
-          </Switch>
-        </>
+        <ThemeProvider theme={theme}>
+          <Provider value={this.getContext()}>
+            <GlobalStyle />
+            <Navmenu />
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <Route path="/login" component={Login} />
+              <Route path="/register" component={Register} />
+              <Route path="/dashboard" component={Dashboard} />
+            </Switch>
+          </Provider>
+        </ThemeProvider>
       </BrowserRouter>
     )
   }
