@@ -16,7 +16,7 @@ const ButtonWrapper = styled.div`
 
 const AuthButton = ({ text }) => (
   <ButtonWrapper>
-    <button>{text}</button>
+    <button type='submit'>{text}</button>
   </ButtonWrapper>
 )
 
