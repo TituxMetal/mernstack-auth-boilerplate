@@ -21,6 +21,10 @@ class App extends Component {
     Materialize.Sidenav.init(sidenavEl)
   }
 
+  submitHandler = values => {
+    console.log('App submitHandler()', values)
+  }
+
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
@@ -29,7 +33,7 @@ class App extends Component {
 
   getContext = () => ({
     ...this.state,
-    handleChange: this.handleChange
+    submitHandler: this.submitHandler
   })
 
   render() {
