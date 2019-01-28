@@ -1,18 +1,17 @@
 import React from 'react'
-import { withContext } from '../../../context';
+import { Field } from 'formik'
+import { withContext } from '../../../context'
 
-const InputField = ( { fieldName, fieldType, fieldLabel, ...props } ) => (
-  <div className='input-field'>
-    <label htmlFor={fieldName}>{fieldLabel}</label>
-    <input
-      onChange={props.handleChange}
-      className='grey-text text-lighten-2'
-      type={fieldType}
-      id={fieldName}
-      name={fieldName}
-      value={props[fieldName]}
-    />
-  </div>
-)
+
+const InputField = ({ field, errors, touched }) => {
+  const classes = `input-field${!!touched[field.name] && !!errors[field.name] ? ' errors' : ''}`
+  return (
+    <div className={classes}>
+      <label htmlFor={field.name}>{field.label}</label>
+      <Field type={field.type} name={field.name} id={field.name} />
+      {touched[field.name] && errors[field.name] && <p>{errors[field.name]}</p>}
+    </div>
+  )
+}
 
 export default withContext(InputField)
