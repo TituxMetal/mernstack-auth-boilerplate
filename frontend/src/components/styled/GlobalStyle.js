@@ -13,6 +13,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   *, *:before, *:after {
     box-sizing: inherit;
+    outline: none;
   }
   body {
     padding: 0;
