@@ -2,7 +2,7 @@ import React from 'react'
 import { withFormik, Form } from 'formik'
 
 import { AuthButton, InputField } from '../layout'
-import { Title } from '../styled'
+import { Title, Messages } from '../styled'
 import { withContext } from '../../context'
 import { registerSchema } from '../../validationSchema/auth'
 
@@ -16,6 +16,12 @@ const RegisterForm = ({ errors, touched }) => {
   return (
     <Form>
       <Title>Register Component</Title>
+      {errors.global && (
+        <Messages>
+          <header>Somethings went wrong!</header>
+          <p>{errors.global}</p>
+        </Messages>
+      )}
       {fields.map(field => (
         <InputField
           key={field.name}
@@ -39,9 +45,10 @@ const FormikRegister = withFormik({
     }
   },
   validationSchema: registerSchema,
-  handleSubmit: (values, { props: { submitHandler }, setSubmitting }) => {
+  handleSubmit: (values, { props: { submitHandler }, setSubmitting, setErrors }) => {
     setSubmitting(false)
     submitHandler(values)
+      .then(res => res && setErrors(res.errors))
   }
 })
 
