@@ -19,7 +19,7 @@ module.exports = {
     const foundUser = await User.findOne({ 'local.email': email })
 
     if (foundUser) {
-      return res.status(403).json({ errors: { email: 'Email already exists' } })
+      return res.status(403).json({ errors: { global: 'User already exists: change your name or email' } })
     }
 
     const newUser = new User({
