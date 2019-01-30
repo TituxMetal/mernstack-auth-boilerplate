@@ -14,6 +14,13 @@ const app = express()
 const mongoose = require('./database/mongo')
 mongoose()
 
+// Enable CORS
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-requested-with, Content-Type, Accept')
+  next()
+})
+
 app.use(passport.initialize())
 require('./passport/index')
 
