@@ -7,7 +7,7 @@ import { Home, Login, Register, Dashboard } from './pages/'
 import { Navmenu } from './components/layout/'
 import { GlobalStyle, theme } from './components/styled'
 import { Provider } from './context'
-import { registerRequest } from './api';
+import { apiRequest } from './api';
 
 class App extends Component {
   state = {
@@ -24,10 +24,13 @@ class App extends Component {
   }
 
   submitHandler = async values => {
-    const res = await registerRequest(values)
+    const request = this.props.location.pathname.replace('/', '')
+    const res = await apiRequest(values, request)
+    
     if (res.errors) {
       return res
     }
+    
     localStorage.authToken = res.token
     this.setState({ isAuthenticated: true })
     this.props.history.push('/dashboard')
