@@ -1,19 +1,21 @@
 import React, { Component } from 'react'
 import { ThemeProvider } from 'styled-components'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { Switch, Route, withRouter } from 'react-router-dom'
 import Materialize from 'materialize-css/dist/js/materialize'
 
 import { Home, Login, Register, Dashboard } from './pages/'
 import { Navmenu } from './components/layout/'
 import { GlobalStyle, theme } from './components/styled'
 import { Provider } from './context'
+import { registerRequest } from './api';
 
 class App extends Component {
   state = {
     name: '',
     email: '',
     password: '',
-    passwordRepeat: ''
+    passwordRepeat: '',
+    isAuthenticated: false
   }
 
   componentDidMount() {
@@ -21,8 +23,14 @@ class App extends Component {
     Materialize.Sidenav.init(sidenavEl)
   }
 
-  submitHandler = values => {
-    console.log('App submitHandler()', values)
+  submitHandler = async values => {
+    const res = await registerRequest(values)
+    if (res.errors) {
+      return res
+    }
+    localStorage.authToken = res.token
+    this.setState({ isAuthenticated: true })
+    this.props.history.push('/dashboard')
   }
 
   handleChange = event => {
@@ -38,22 +46,20 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <Provider value={this.getContext()}>
-            <GlobalStyle />
-            <Navmenu />
-            <Switch>
-              <Route path="/" exact component={Home} />
-              <Route path="/login" component={Login} />
-              <Route path="/register" component={Register} />
-              <Route path="/dashboard" component={Dashboard} />
-            </Switch>
-          </Provider>
-        </ThemeProvider>
-      </BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <Provider value={this.getContext()}>
+          <GlobalStyle />
+          <Navmenu />
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            <Route path="/dashboard" component={Dashboard} />
+          </Switch>
+        </Provider>
+      </ThemeProvider>
     )
   }
 }
 
-export default App
+export default withRouter(App)
