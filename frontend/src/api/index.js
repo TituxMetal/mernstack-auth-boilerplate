@@ -1,12 +1,23 @@
 import axios from 'axios'
 
-const apiUri = 'http://localhost:5000/api/users'
+export const apiRequest = async ({ name, email, password }, request) => {
+  const apiUri = 'http://localhost:5000/api/users'
+  let data
+  const uri = `${apiUri}/${request}`
 
-export const registerRequest = async ({ name, email, password }) => {
+  switch (request) {
+    case 'register':
+      data = { name, email, password }
+      break
+    case 'login':
+      data = { email, password }
+      break
+  }
+
   try {
-    const res = await axios.post(`${apiUri}/register`, { name, email, password })
+    const res = await axios.post(uri, data)
     return res.data
-  } catch (err) {
-    return err.response.data
+  } catch (error) {
+    return error.response.data
   }
 }
