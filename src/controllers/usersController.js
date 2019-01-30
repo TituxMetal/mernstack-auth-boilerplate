@@ -35,9 +35,16 @@ module.exports = {
   },
 
   login: async (req, res, next) => {
-    const token = await signToken(req.user)
+    const { email, password } = req.body
+    const user = await User.findOne({ 'local.email': email })
+    
+    if (await user && await user.isValidPassword(password)) {
+      const token = await signToken(req.body)
 
-    return res.status(200).json({ token })
+      return res.status(200).json({ token })
+    }
+
+    return res.status(401).json({ errors: { global: 'Invalid credentials' } })
   },
 
   secret: async (req, res, next) => {
