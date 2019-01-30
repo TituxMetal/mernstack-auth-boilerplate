@@ -1,6 +1,5 @@
 import React from 'react'
 import { Field } from 'formik'
-import { withContext } from '../../../context'
 
 
 const InputField = ({ field, errors, touched }) => {
@@ -14,4 +13,4 @@ const InputField = ({ field, errors, touched }) => {
   )
 }
 
-export default withContext(InputField)
+export default InputField
