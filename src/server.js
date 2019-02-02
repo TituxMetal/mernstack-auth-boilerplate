@@ -17,7 +17,7 @@ mongoose()
 // Enable CORS
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'Origin, X-requested-with, Content-Type, Accept')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-requested-with, Content-Type, Accept, Authorization')
   next()
 })
 
