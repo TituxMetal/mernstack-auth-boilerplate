@@ -39,7 +39,7 @@ module.exports = {
     const user = await User.findOne({ 'local.email': email })
     
     if (await user && await user.isValidPassword(password)) {
-      const token = await signToken(req.body)
+      const token = await signToken(user)
 
       return res.status(200).json({ token })
     }
