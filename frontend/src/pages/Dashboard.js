@@ -1,11 +1,20 @@
 import React from 'react'
 
-const Dashboard = () => {
+import { withContext } from '../context'
+import { PageWrapper, Title } from '../components/styled'
+
+const Dashboard = ({ secret, getSecret }) => {
+  const secretOrButton = secret ?
+    <span>{secret}</span> :
+    <button onClick={getSecret}>Get the secret resource</button>
   return (
     <div className='container'>
-      Dashboard Component
+      <PageWrapper>
+        <Title>Dashboard Page</Title>
+        <p>{secretOrButton}</p>
+      </PageWrapper>
     </div>
   )
 }
 
-export default Dashboard
+export default withContext(Dashboard)
