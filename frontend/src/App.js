@@ -7,7 +7,8 @@ import { Home, Login, Register, Dashboard } from './pages/'
 import { Navmenu } from './components/layout/'
 import { GlobalStyle, theme } from './components/styled'
 import { Provider } from './context'
-import { apiRequest } from './api';
+import { authRequest, secretRequest } from './api'
+import { GuestRoute, UserRoute } from './routes/'
 
 class App extends Component {
   state = {
@@ -15,18 +16,30 @@ class App extends Component {
     email: '',
     password: '',
     passwordRepeat: '',
-    isAuthenticated: false
+    isAuthenticated: !!localStorage.getItem('authToken'),
+    secret: false
   }
 
-  componentDidMount() {
+  async componentWillMount() {
     const sidenavEl = document.querySelectorAll('.sidenav')
     Materialize.Sidenav.init(sidenavEl)
+    this.state.isAuthenticated && await this.verifyToken()
+  }
+
+  async componentWillUpdate() {
+    this.state.isAuthenticated && await this.verifyToken()
+  }
+
+  verifyToken = async () => {
+    const token = localStorage.getItem('authToken')
+    const res = await secretRequest(token)
+    !res && this.logout()
   }
 
   submitHandler = async values => {
     const request = this.props.location.pathname.replace('/', '')
-    const res = await apiRequest(values, request)
-    
+    const res = await authRequest(values, request)
+
     if (res.errors) {
       return res
     }
@@ -34,6 +47,18 @@ class App extends Component {
     localStorage.authToken = res.token
     this.setState({ isAuthenticated: true })
     this.props.history.push('/dashboard')
+  }
+
+  logout = () => {
+    localStorage.removeItem('authToken')
+    this.setState({ isAuthenticated: false })
+  }
+
+  getSecret = async () => {
+    const token = localStorage.getItem('authToken')
+    const res = await secretRequest(token)
+    
+    this.setState({ secret: res.secret })
   }
 
   handleChange = event => {
@@ -44,10 +69,13 @@ class App extends Component {
 
   getContext = () => ({
     ...this.state,
-    submitHandler: this.submitHandler
+    submitHandler: this.submitHandler,
+    logoutHandler: this.logout,
+    getSecret: this.getSecret
   })
 
   render() {
+    const { location } = this.props
     return (
       <ThemeProvider theme={theme}>
         <Provider value={this.getContext()}>
@@ -55,9 +83,9 @@ class App extends Component {
           <Navmenu />
           <Switch>
             <Route path="/" exact component={Home} />
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
-            <Route path="/dashboard" component={Dashboard} />
+            <GuestRoute location={location} path="/login" component={Login} />
+            <GuestRoute location={location} path="/register" component={Register} />
+            <UserRoute location={location} path="/dashboard" component={Dashboard} />
           </Switch>
         </Provider>
       </ThemeProvider>
