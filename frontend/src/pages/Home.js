@@ -1,9 +1,13 @@
 import React from 'react'
 
+import { PageWrapper, Title } from '../components/styled'
+
 const Home = () => {
   return (
     <div className='container'>
-      Home Component
+      <PageWrapper>
+        <Title>Home Page</Title>
+      </PageWrapper>
     </div>
   )
 }
