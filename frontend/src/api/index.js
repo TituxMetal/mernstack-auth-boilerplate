@@ -1,7 +1,8 @@
 import axios from 'axios'
 
-export const apiRequest = async ({ name, email, password }, request) => {
-  const apiUri = 'http://localhost:5000/api/users'
+const apiUri = 'http://localhost:5000/api/users'
+
+export const authRequest = async ({ name, email, password }, request) => {
   let data
   const uri = `${apiUri}/${request}`
 
@@ -12,12 +13,26 @@ export const apiRequest = async ({ name, email, password }, request) => {
     case 'login':
       data = { email, password }
       break
+    default: break
   }
 
   try {
     const res = await axios.post(uri, data)
+    
     return res.data
   } catch (error) {
     return error.response.data
+  }
+}
+
+export const secretRequest = async (token) => {
+  const uri = `${apiUri}/secret`
+
+  try {
+    const res = await axios.get(uri, { headers: { 'Authorization': `Bearer ${token}` } })
+
+    return res.data
+  } catch (error) {
+    return false
   }
 }
