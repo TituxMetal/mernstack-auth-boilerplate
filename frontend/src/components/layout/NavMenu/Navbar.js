@@ -2,7 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import Navlinks from './Navlinks'
+import { withContext } from '../../../context'
+import SignedInLinks from './SignedInLinks'
+import SignedOutLinks from './SignedOutLinks'
 
 const NavMenu = styled.nav`
   background-color: ${props => props.theme.secondaryColor};
@@ -14,25 +16,28 @@ const NavMenu = styled.nav`
   }
 `
 
-const Navbar = () => (
-  <>
-    <NavMenu className='nav-wrapper z-depth-0'>
-      <div className="container">
-        <a href="/" data-target="mobile" className="sidenav-trigger">
-          <i className="material-icons">menu</i>
-        </a>
-        <Link to='/' className='brand-logo'>
-          Mern Auth
-        </Link>
-        <ul className="right hide-on-med-and-down">
-          <Navlinks />
-        </ul>
-      </div>
-    </NavMenu>
-    <ul className="sidenav" id="mobile">
-      <Navlinks />
-    </ul>
-  </>
-)
+const Navbar = ({ isAuthenticated, logoutHandler }) => {
+  const navlinks = isAuthenticated ? <SignedInLinks handleLogout={logoutHandler} /> : <SignedOutLinks />
+  return (
+    <>
+      <NavMenu className='nav-wrapper z-depth-0'>
+        <div className="container">
+          <a href="/" data-target="mobile" className="sidenav-trigger">
+            <i className="material-icons">menu</i>
+          </a>
+          <Link to='/' className='brand-logo'>
+            Mern Auth
+          </Link>
+          <ul className="right hide-on-med-and-down">
+            {navlinks}
+          </ul>
+        </div>
+      </NavMenu>
+      <ul className="sidenav" id="mobile">
+        {navlinks}
+      </ul>
+    </>
+  )
+}
 
-export default Navbar
+export default withContext(Navbar)
